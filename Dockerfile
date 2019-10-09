@@ -1,9 +1,9 @@
 #name of container: docker-cacti
 #versison of container: 0.6.3
 FROM quantumobject/docker-baseimage:18.04
-MAINTAINER Angel Rodriguez  "angel@quantumobject.com"
+MAINTAINER Joseph MBENGUE "mbenguejoseph@gmail.com"
 
-ENV TZ America/New_York
+ENV TZ Europe/Paris
 
 # Update the container
 #Installation of nesesary package/software for this containers...
