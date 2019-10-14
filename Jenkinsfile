@@ -1,41 +1,12 @@
-node {
-    def app
-
-    stage('Clone repository') {
-        /* Let's make sure we have the repository cloned to our workspace */
-
+node('docker') {
+ 
+    stage 'Checkout'
         checkout scm
-    }
-
-properties([
-    buildDiscarder(logRotator(numToKeepStr: '50', artifactNumToKeepStr: '5')),
-    pipelineTriggers([cron('H H/6 * * *')]),
-])
-
-nodeWithTimeout('docker') {
-    deleteDir()
-
-    stage('Checkout') {
-        checkout scm
-    }
-
-    if (!infra.isTrusted()) {
-
-        stage('shellcheck') {
-            // run shellcheck ignoring error SC1091
-            // Not following: /usr/local/bin/jenkins-support was not specified as input
-            sh 'make shellcheck'
-        }
-
-        /* Outside of the trusted.ci environment, we're building and testing
-         * the Dockerfile in this repository, but not publishing to docker hub
-         */
-        stage('Build') {
-            sh 'make build'
-        }
-
-        stage('Prepare Test') {
-            sh "make prepare-test"
-        }
-    }
+    stage 'Build & UnitTest'
+        sh "docker build -t accountownerapp:B${BUILD_NUMBER} -f Dockerfile ."
+        sh "docker build -t accountownerapp:test-B${BUILD_NUMBER} -f Dockerfile.Integration ."
+  
+    stage 'Integration Test'
+        sh "docker-compose -f docker-compose.integration.yml up --force-recreate --abort-on-container-exit"
+        sh "docker-compose -f docker-compose.integration.yml down -v"
 }
