@@ -1,4 +1,11 @@
-#!/usr/bin/env groovy
+node {
+    def app
+
+    stage('Clone repository') {
+        /* Let's make sure we have the repository cloned to our workspace */
+
+        checkout scm
+    }
 
 properties([
     buildDiscarder(logRotator(numToKeepStr: '50', artifactNumToKeepStr: '5')),
