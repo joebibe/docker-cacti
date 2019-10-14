@@ -1,5 +1,4 @@
-pipeline{
-    agent any
+node{
     stage 'Checkout'
         checkout scm
     stage 'Build & UnitTest'
