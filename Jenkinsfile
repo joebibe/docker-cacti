@@ -1,5 +1,5 @@
-node('docker') {
- 
+pipeline{
+    agent any
     stage 'Checkout'
         checkout scm
     stage 'Build & UnitTest'
