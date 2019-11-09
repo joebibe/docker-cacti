@@ -1,12 +1,26 @@
 FROM million12/nginx-php:php70
 MAINTAINER Przemyslaw Ozgo <linux@ozgo.info>
 
-ENV DB_USER=user \
-    DB_PASS=password \
-    DB_ADDRESS=127.0.0.1 \
-    SPINE_VERSION=0.8.8f \
-    CACTI_COMMIT_HASH=dfba135dbd84f93f30704da824fa52a7df272b65 \
-    TIMEZONE=UTC
+ENV \
+    DB_NAME=cacti \
+    DB_USER=cactiuser \
+    DB_PASS=cactipassword \
+    DB_HOST=localhost \
+    DB_PORT=3306 \
+    RDB_NAME=cacti \
+    RDB_USER=cactiuser \
+    RDB_PASS=cactipassword \
+    RDB_HOST=localhost \
+    RDB_PORT=3306 \
+    BACKUP_RETENTION=7 \
+    BACKUP_TIME=0 \
+    SNMP_COMMUNITY=public \
+    REMOTE_POLLER=0 \
+    INITIALIZE_DB=0 \
+    INITIALIZE_INFLUX=0 \
+    TZ=UTC \
+    PHP_MEMORY_LIMIT=800M \
+    PHP_MAX_EXECUTION_TIME=60
 
 RUN \
     rpm --rebuilddb && yum clean all && \
